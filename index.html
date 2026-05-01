@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-  max-width: 480px;
+  max-width: 500px;
   margin: auto;
   padding: 30px 20px;
 }
@@ -49,7 +49,7 @@ body {
   margin-bottom: 6px;
 }
 
-input, select {
+input {
   width: 100%;
   padding: 12px;
   border-radius: 10px;
@@ -103,7 +103,7 @@ button:hover {
 
 .note {
   font-size: 12px;
-  opacity: 0.6;
+  opacity: 0.65;
   margin-top: 10px;
   text-align: center;
 }
@@ -123,109 +123,68 @@ button:hover {
   <div class="card">
 
     <div class="logo">🚀 Noontech</div>
-    <div class="subtitle">1-click setup for Stremio + Torbox</div>
+    <div class="subtitle">Install Torbox in Stremio (2 steps)</div>
 
     <!-- STEP 1 -->
     <div class="step">
-      <div class="step-title">STEP 1 — Get your API key</div>
-      <a href="https://torbox.app/settings/api" target="_blank">
-        <button class="copy-btn">Open Torbox API Page</button>
+      <div class="step-title">STEP 1 — Get your Torbox addon link</div>
+      <a href="https://torbox.app/settings" target="_blank">
+        <button class="copy-btn">Open Torbox Settings</button>
       </a>
+      <div class="note">
+        In Torbox, click <b>“Access Stremio Addon”</b> and copy the link.
+      </div>
     </div>
 
     <!-- STEP 2 -->
     <div class="step">
-      <div class="step-title">STEP 2 — Paste your API key</div>
-      <input type="text" id="apiKey" placeholder="Paste API key here">
+      <div class="step-title">STEP 2 — Paste your addon URL</div>
+      <input type="text" id="addonUrl" placeholder="Paste your Torbox addon URL here">
     </div>
 
     <!-- STEP 3 -->
-    <div class="step">
-      <div class="step-title">STEP 3 — Choose profile</div>
-      <select id="profile">
-        <option value="fast">⚡ No Buffer (Fast)</option>
-        <option value="balanced">🎬 Balanced</option>
-        <option value="quality">💎 Best Quality</option>
-      </select>
-    </div>
-
-    <!-- STEP 4 -->
-    <button onclick="generate()">Generate Setup</button>
+    <button onclick="generate()">Install in Stremio</button>
 
     <div id="result" style="display:none;">
 
-      <a id="installLink" class="install-btn">👉 Install in Stremio</a>
+      <a id="installLink" class="install-btn">👉 Open in Stremio</a>
 
       <button class="copy-btn" onclick="copyLink()">Copy Install Link</button>
 
       <div class="output" id="rawLink"></div>
 
       <div class="note">
-        If the button doesn't open Stremio, copy the link and open it manually.
+        If the button doesn’t open Stremio, copy the link and open it manually.
       </div>
 
     </div>
 
     <div class="note">
-      🔒 Your API key is processed locally and never stored or sent anywhere.
+      🔒 Your addon link is never stored. Do not share it publicly.
     </div>
 
   </div>
 
   <div class="footer">
-    Noontech • Simple Streaming Setup
+    Noontech • Torbox Installer
   </div>
 </div>
 
 <script>
 
-// UTF-8 safe base64 encoder
-function encodeConfig(obj) {
-  return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
-}
-
 function generate() {
-  const apiKey = document.getElementById("apiKey").value.trim();
-  const profile = document.getElementById("profile").value;
+  const url = document.getElementById("addonUrl").value.trim();
 
-  if (!apiKey || apiKey.length < 20) {
-    alert("Please enter a valid API key");
+  if (!url.startsWith("http")) {
+    alert("Please paste a valid Torbox addon URL");
     return;
   }
 
-  let config = {
-    apiKey: apiKey,
-    cachedOnly: true,
-    sort: "seeders",
-    timeout: 40,
-    maxQuality: "1080p"
-  };
-
-  if (profile === "fast") {
-    config.timeout = 30;
-    config.maxQuality = "1080p";
-  }
-
-  if (profile === "balanced") {
-    config.timeout = 40;
-    config.maxQuality = "4K";
-  }
-
-  if (profile === "quality") {
-    config.timeout = 60;
-    config.maxQuality = "4K";
-  }
-
-  const encoded = encodeConfig(config);
-
-  // ✅ USE PUBLIC BASE ADDON URL (NOT UUID VERSION)
-  const baseAddon = "https://aio.torbox.app/manifest.json";
-
-  const manifestUrl = `${baseAddon}?config=${encoded}`;
-  const deepLink = `stremio://addon-install?url=${encodeURIComponent(manifestUrl)}`;
+  const deepLink = "stremio://addon-install?url=" + encodeURIComponent(url);
 
   document.getElementById("installLink").href = deepLink;
   document.getElementById("rawLink").innerText = deepLink;
+
   document.getElementById("result").style.display = "block";
 }
 
