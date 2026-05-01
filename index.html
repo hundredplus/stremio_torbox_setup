@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stremio + TorBox Setup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .card {
+      max-width: 500px;
+      margin: auto;
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #22c55e;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .secondary {
+      background: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🎬 Stremio + TorBox Setup</h2>
+
+    <p><b>Step 1:</b> Login to TorBox</p>
+    <button class="secondary" onclick="window.open('https://torbox.app/login','_blank')">
+      Open TorBox Login
+    </button>
+
+    <p><b>Step 2:</b> Get API Key</p>
+    <button class="secondary" onclick="window.open('https://torbox.app/settings/api','_blank')">
+      Open API Page
+    </button>
+
+    <p><b>Step 3:</b> Paste API Key</p>
+    <input id="apiKey" placeholder="Paste API key here..." />
+
+    <button onclick="install()">Install Addon</button>
+  </div>
+
+  <script>
+    function install() {
+      const key = document.getElementById('apiKey').value.trim();
+      if (!key) {
+        alert('Please paste your API key');
+        return;
+      }
+
+      const url = `stremio://aio-stream-addon.vercel.app/manifest.json?provider=torbox&cachedOnly=true&sort=seeders&quality=1080p,2160p&exclude=cam&apiKey=${key}`;
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
