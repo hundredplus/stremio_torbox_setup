@@ -9,110 +9,112 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #020617);
-  color: #e2e8f0;
+  background: #000;
+  color: #fff;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 800px;
   margin: auto;
   padding: 30px 20px;
 }
 
-.card {
-  background: #1e293b;
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+.progress {
+  height: 4px;
+  background: #222;
+  border-radius: 2px;
+  margin-bottom: 30px;
 }
 
-.logo {
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #e50914;
+  transition: 0.3s;
+}
+
+.step {
+  display: none;
+  animation: fade 0.3s ease;
+}
+
+.step.active {
+  display: block;
+}
+
+@keyframes fade {
+  from {opacity:0; transform: translateY(10px);}
+  to {opacity:1;}
+}
+
+h1 {
   text-align: center;
-  font-size: 24px;
-  font-weight: bold;
 }
 
 .subtitle {
   text-align: center;
-  font-size: 14px;
   opacity: 0.7;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
-.step {
-  margin-bottom: 20px;
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
-.step-title {
-  font-size: 13px;
-  opacity: 0.6;
-  margin-bottom: 6px;
+.card {
+  background: #111;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.2s;
 }
 
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #020617;
-  color: white;
-  font-size: 14px;
+.card:hover {
+  border-color: #e50914;
 }
 
-button {
-  width: 100%;
+.card.active {
+  border-color: #e50914;
+}
+
+.button {
+  margin-top: 30px;
   padding: 14px;
-  border-radius: 12px;
+  background: #e50914;
   border: none;
-  background: #38bdf8;
-  color: black;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 10px;
+  width: 100%;
 }
 
-button:hover {
-  background: #0ea5e9;
+.button.secondary {
+  background: #333;
+}
+
+.guide {
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.step-item {
+  margin-bottom: 10px;
 }
 
 .install-btn {
   display: block;
-  text-align: center;
-  margin-top: 15px;
+  margin-top: 20px;
   padding: 14px;
   background: #22c55e;
-  border-radius: 12px;
+  text-align: center;
+  border-radius: 8px;
   text-decoration: none;
   color: white;
   font-weight: bold;
-}
-
-.copy-btn {
-  background: #334155;
-  color: white;
-}
-
-.output {
-  margin-top: 10px;
-  font-size: 12px;
-  background: #020617;
-  padding: 10px;
-  border-radius: 10px;
-  word-break: break-all;
-}
-
-.note {
-  font-size: 12px;
-  opacity: 0.65;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 12px;
-  opacity: 0.5;
 }
 </style>
 </head>
@@ -120,80 +122,148 @@ button:hover {
 <body>
 
 <div class="container">
-  <div class="card">
 
-    <div class="logo">🚀 Noontech</div>
-    <div class="subtitle">Install Torbox in Stremio (2 steps)</div>
+  <div class="progress"><div class="progress-bar" id="progress"></div></div>
 
-    <!-- STEP 1 -->
-    <div class="step">
-      <div class="step-title">STEP 1 — Get your Torbox addon link</div>
-      <a href="https://torbox.app/settings" target="_blank">
-        <button class="copy-btn">Open Torbox Settings</button>
-      </a>
-      <div class="note">
-        In Torbox, click <b>“Access Stremio Addon”</b> and copy the link.
+  <!-- STEP 1 -->
+  <div class="step active" id="step1">
+    <h1>Welcome to Noontech</h1>
+    <div class="subtitle">We’ll set everything up in under 1 minute</div>
+    <button class="button" onclick="next()">Get Started</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step2">
+    <h1>Choose Your Experience</h1>
+    <div class="subtitle">We’ll optimize streaming for you</div>
+
+    <div class="cards">
+      <div class="card" onclick="selectProfile('fast', this)">
+        <h2>⚡ Ultra Fast</h2>
+        <p>No buffering</p>
+      </div>
+
+      <div class="card" onclick="selectProfile('balanced', this)">
+        <h2>🎬 Balanced</h2>
+        <p>Best overall</p>
+      </div>
+
+      <div class="card" onclick="selectProfile('quality', this)">
+        <h2>💎 Best Quality</h2>
+        <p>Maximum quality</p>
       </div>
     </div>
 
-    <!-- STEP 2 -->
-    <div class="step">
-      <div class="step-title">STEP 2 — Paste your addon URL</div>
-      <input type="text" id="addonUrl" placeholder="Paste your Torbox addon URL here">
-    </div>
-
-    <!-- STEP 3 -->
-    <button onclick="generate()">Install in Stremio</button>
-
-    <div id="result" style="display:none;">
-
-      <a id="installLink" class="install-btn">👉 Open in Stremio</a>
-
-      <button class="copy-btn" onclick="copyLink()">Copy Install Link</button>
-
-      <div class="output" id="rawLink"></div>
-
-      <div class="note">
-        If the button doesn’t open Stremio, copy the link and open it manually.
-      </div>
-
-    </div>
-
-    <div class="note">
-      🔒 Your addon link is never stored. Do not share it publicly.
-    </div>
-
+    <button class="button" onclick="next()">Continue</button>
   </div>
 
-  <div class="footer">
-    Noontech • Torbox Installer
+  <!-- STEP 3 -->
+  <div class="step" id="step3">
+    <h1>Apply Settings</h1>
+    <div class="subtitle">We’ll guide you exactly what to click</div>
+
+    <div class="guide" id="guide"></div>
+
+    <a href="https://torbox.app/settings" target="_blank" class="install-btn">
+      Open Torbox Settings
+    </a>
+
+    <button class="button" onclick="next()">Done</button>
   </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step4">
+    <h1>Install Addon</h1>
+    <div class="subtitle">Paste your addon link below</div>
+
+    <input id="addonUrl" placeholder="Paste Torbox addon URL here"
+      style="width:100%;padding:12px;border-radius:8px;border:none;background:#111;color:white">
+
+    <button class="button" onclick="install()">Install in Stremio</button>
+
+    <a id="installLink" class="install-btn" style="display:none;">Open in Stremio</a>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step5">
+    <h1>🎉 You're Ready</h1>
+    <div class="subtitle">Enjoy buffer-free streaming</div>
+  </div>
+
 </div>
 
 <script>
+let step = 1;
+let selected = null;
 
-function generate() {
-  const url = document.getElementById("addonUrl").value.trim();
+function updateProgress() {
+  document.getElementById("progress").style.width = (step - 1) * 25 + "%";
+}
 
-  if (!url.startsWith("http")) {
-    alert("Please paste a valid Torbox addon URL");
+function next() {
+  if (step === 2 && !selected) {
+    alert("Select a profile first");
     return;
   }
 
-  const deepLink = "stremio://addon-install?url=" + encodeURIComponent(url);
+  document.getElementById("step" + step).classList.remove("active");
+  step++;
+  document.getElementById("step" + step).classList.add("active");
 
-  document.getElementById("installLink").href = deepLink;
-  document.getElementById("rawLink").innerText = deepLink;
+  if (step === 3) renderGuide();
 
-  document.getElementById("result").style.display = "block";
+  updateProgress();
 }
 
-function copyLink() {
-  const text = document.getElementById("rawLink").innerText;
-  navigator.clipboard.writeText(text);
-  alert("Copied! Open it with Stremio.");
+function selectProfile(p, el) {
+  selected = p;
+  document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+  el.classList.add("active");
 }
 
+function renderGuide() {
+  let g = "";
+
+  if (selected === "fast") {
+    g = `
+      <div class="step-item">✔ Choose files under 10GB</div>
+      <div class="step-item">✔ High seeders (10+)</div>
+      <div class="step-item">✔ Avoid REMUX</div>
+    `;
+  }
+
+  if (selected === "balanced") {
+    g = `
+      <div class="step-item">✔ 5–20GB files</div>
+      <div class="step-item">✔ 1080p–4K</div>
+      <div class="step-item">✔ Cached preferred</div>
+    `;
+  }
+
+  if (selected === "quality") {
+    g = `
+      <div class="step-item">✔ 20GB+ BluRay / REMUX</div>
+      <div class="step-item">✔ 4K</div>
+      <div class="step-item">✔ Fast internet required</div>
+    `;
+  }
+
+  document.getElementById("guide").innerHTML = g;
+}
+
+function install() {
+  const url = document.getElementById("addonUrl").value.trim();
+  if (!url.startsWith("http")) {
+    alert("Invalid URL");
+    return;
+  }
+
+  const link = "stremio://addon-install?url=" + encodeURIComponent(url);
+
+  const btn = document.getElementById("installLink");
+  btn.href = link;
+  btn.style.display = "block";
+}
 </script>
 
 </body>
