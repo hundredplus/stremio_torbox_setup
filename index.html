@@ -1,124 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Noontech Stremio Setup</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noontech Setup</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  color: #e2e8f0;
+}
 
-    .container {
-      background: #1e293b;
-      padding: 30px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
+.container {
+  max-width: 480px;
+  margin: auto;
+  padding: 30px 20px;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+.card {
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
 
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: none;
-      font-size: 14px;
-    }
+.logo {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
 
-    input {
-      background: #0f172a;
-      color: #fff;
-    }
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 25px;
+}
 
-    select {
-      background: #0f172a;
-      color: #fff;
-    }
+.step {
+  margin-bottom: 20px;
+}
 
-    button {
-      background: #38bdf8;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.step-title {
+  font-size: 13px;
+  opacity: 0.6;
+  margin-bottom: 6px;
+}
 
-    button:hover {
-      background: #0ea5e9;
-    }
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #020617;
+  color: white;
+  font-size: 14px;
+}
 
-    .output {
-      margin-top: 15px;
-      word-break: break-all;
-      font-size: 12px;
-      background: #020617;
-      padding: 10px;
-      border-radius: 10px;
-    }
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #38bdf8;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
 
-    .install-btn {
-      display: block;
-      text-align: center;
-      margin-top: 15px;
-      padding: 12px;
-      background: #22c55e;
-      border-radius: 10px;
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-    }
+button:hover {
+  background: #0ea5e9;
+}
 
-    .install-btn:hover {
-      background: #16a34a;
-    }
+.install-btn {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  padding: 14px;
+  background: #22c55e;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
 
-  </style>
+.copy-btn {
+  background: #334155;
+  color: white;
+}
+
+.output {
+  margin-top: 10px;
+  font-size: 12px;
+  background: #020617;
+  padding: 10px;
+  border-radius: 10px;
+  word-break: break-all;
+}
+
+.note {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  opacity: 0.5;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-  <h1>🚀 Noontech Setup</h1>
+  <div class="card">
 
-  <label>Torbox API Key</label>
-  <input type="text" id="apiKey" placeholder="Paste your API key here">
+    <div class="logo">🚀 Noontech</div>
+    <div class="subtitle">1-click setup for Stremio + Torbox</div>
 
-  <label>Streaming Profile</label>
-  <select id="profile">
-    <option value="fast">⚡ No Buffer (Fast)</option>
-    <option value="balanced">🎬 Balanced</option>
-    <option value="quality">💎 Best Quality</option>
-  </select>
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="step-title">STEP 1 — Get your API key</div>
+      <a href="https://torbox.app/settings/api" target="_blank">
+        <button class="copy-btn">Open Torbox API Page</button>
+      </a>
+    </div>
 
-  <button onclick="generate()">Generate Install Link</button>
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="step-title">STEP 2 — Paste your API key</div>
+      <input type="text" id="apiKey" placeholder="Paste API key here">
+    </div>
 
-  <div id="result" style="display:none;">
-    <a id="installLink" class="install-btn">👉 Install in Stremio</a>
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="step-title">STEP 3 — Choose profile</div>
+      <select id="profile">
+        <option value="fast">⚡ No Buffer (Fast)</option>
+        <option value="balanced">🎬 Balanced</option>
+        <option value="quality">💎 Best Quality</option>
+      </select>
+    </div>
 
-    <div class="output" id="rawLink"></div>
+    <!-- STEP 4 -->
+    <button onclick="generate()">Generate Setup</button>
+
+    <div id="result" style="display:none;">
+
+      <a id="installLink" class="install-btn">👉 Install in Stremio</a>
+
+      <button class="copy-btn" onclick="copyLink()">Copy Install Link</button>
+
+      <div class="output" id="rawLink"></div>
+
+      <div class="note">
+        If the button doesn't open Stremio, copy the link and open it manually.
+      </div>
+
+    </div>
+
+    <div class="note">
+      🔒 Your API key is processed locally and never stored or sent anywhere.
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Noontech • Simple Streaming Setup
   </div>
 </div>
 
 <script>
+
+// UTF-8 safe base64 encoder
+function encodeConfig(obj) {
+  return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+}
+
 function generate() {
   const apiKey = document.getElementById("apiKey").value.trim();
   const profile = document.getElementById("profile").value;
 
-  if (!apiKey) {
-    alert("Please enter your Torbox API key");
+  if (!apiKey || apiKey.length < 20) {
+    alert("Please enter a valid API key");
     return;
   }
 
@@ -131,31 +202,39 @@ function generate() {
   };
 
   if (profile === "fast") {
-    config.maxQuality = "1080p";
     config.timeout = 30;
+    config.maxQuality = "1080p";
   }
 
   if (profile === "balanced") {
-    config.maxQuality = "4K";
     config.timeout = 40;
+    config.maxQuality = "4K";
   }
 
   if (profile === "quality") {
-    config.maxQuality = "4K";
     config.timeout = 60;
+    config.maxQuality = "4K";
   }
 
-  const encoded = btoa(JSON.stringify(config));
+  const encoded = encodeConfig(config);
 
-  const manifestUrl = `https://YOUR-ADDON-URL/manifest.json?config=${encoded}`;
+  // ✅ USE PUBLIC BASE ADDON URL (NOT UUID VERSION)
+  const baseAddon = "https://aio.torbox.app/manifest.json";
 
+  const manifestUrl = `${baseAddon}?config=${encoded}`;
   const deepLink = `stremio://addon-install?url=${encodeURIComponent(manifestUrl)}`;
 
   document.getElementById("installLink").href = deepLink;
   document.getElementById("rawLink").innerText = deepLink;
-
   document.getElementById("result").style.display = "block";
 }
+
+function copyLink() {
+  const text = document.getElementById("rawLink").innerText;
+  navigator.clipboard.writeText(text);
+  alert("Copied! Open it with Stremio.");
+}
+
 </script>
 
 </body>
