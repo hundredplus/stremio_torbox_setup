@@ -3,52 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stremio + Torbox Easy Setup</title>
-    <!-- Pulling in Tailwind CSS for quick styling -->
+    <title>Stremio + Torbox Setup</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans p-6 md:p-12">
-    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
         <h1 class="text-2xl font-bold text-center mb-6">Connect Torbox to Stremio</h1>
         
-        <!-- Step 1: API Key Input with Direct Link -->
-        <div class="mb-6">
+        <!-- Step 1: API Key -->
+        <div class="mb-8">
             <label class="block text-sm font-semibold mb-2" for="apiKey">1. Enter Your Torbox API Key</label>
-            
             <div class="flex flex-col sm:flex-row gap-2 mb-2">
-                <!-- Direct link to Torbox Settings -->
                 <a href="https://torbox.app/settings" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold py-3 px-4 sm:py-2 rounded-lg transition flex items-center justify-center whitespace-nowrap">
                     Get My Key ↗
                 </a>
-                <input type="text" id="apiKey" class="w-full p-3 sm:p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Paste key here...">
+                <input type="text" id="apiKey" oninput="updateLink()" class="w-full p-3 sm:p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Paste key here...">
             </div>
-            
-            <p class="text-xs text-gray-500 mt-1">Click "Get My Key", copy the long string under the API section, and paste it here.</p>
+            <p class="text-xs text-gray-500">Click "Get My Key", copy the long string under the API section, and paste it here.</p>
         </div>
 
-        <!-- Step 2: Profile Selection -->
-        <div class="mb-6">
-            <label class="block text-sm font-semibold mb-2">2. Choose Your Experience</label>
+        <!-- Step 2: Profiles -->
+        <div class="mb-8">
+            <label class="block text-sm font-semibold mb-2">2. Quick Profiles (Optional)</label>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <button onclick="setProfile('fast', this)" class="profile-btn p-3 border rounded-lg hover:bg-blue-50 focus:bg-blue-100 focus:border-blue-500 transition text-left outline-none">
-                    <div class="font-bold text-blue-600">Fast</div>
-                    <div class="text-xs text-gray-600 mt-1">1080p max. Best for slower internet connections.</div>
+                <button onclick="applyProfile('netflix')" class="p-3 border border-gray-300 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 transition text-left">
+                    <div class="font-bold text-blue-600">"Netflix" Mode</div>
+                    <div class="text-xs text-gray-600 mt-1">Super clean. 1 link per quality, instant play only.</div>
                 </button>
-                <button onclick="setProfile('balanced', this)" class="profile-btn p-3 border rounded-lg hover:bg-green-50 focus:bg-green-100 focus:border-green-500 transition text-left outline-none">
-                    <div class="font-bold text-green-600">Balanced</div>
-                    <div class="text-xs text-gray-600 mt-1">4K supported. Prioritizes reliable links over raw size.</div>
+                <button onclick="applyProfile('datasaver')" class="p-3 border border-gray-300 rounded-lg hover:bg-green-50 focus:ring-2 focus:ring-green-500 transition text-left">
+                    <div class="font-bold text-green-600">Data Saver</div>
+                    <div class="text-xs text-gray-600 mt-1">1080p max. Smallest file sizes, instant play only.</div>
                 </button>
-                <button onclick="setProfile('quality', this)" class="profile-btn p-3 border rounded-lg hover:bg-purple-50 focus:bg-purple-100 focus:border-purple-500 transition text-left outline-none">
-                    <div class="font-bold text-purple-600">Best Quality</div>
-                    <div class="text-xs text-gray-600 mt-1">No limits. Pulls the heaviest 4K+ files available.</div>
+                <button onclick="applyProfile('cinephile')" class="p-3 border border-gray-300 rounded-lg hover:bg-purple-50 focus:ring-2 focus:ring-purple-500 transition text-left">
+                    <div class="font-bold text-purple-600">Cinephile</div>
+                    <div class="text-xs text-gray-600 mt-1">Highest quality 4K files. Shows more options.</div>
                 </button>
             </div>
         </div>
 
-        <!-- Step 3: Action Area (Hidden until profile is clicked) -->
-        <div id="resultArea" class="hidden mt-8 p-6 bg-gray-50 rounded-lg border text-center">
-            <h3 class="text-lg font-bold mb-4">You're All Set!</h3>
-            <a id="installBtn" href="#" class="block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition shadow-md">
+        <!-- Step 3: Advanced Settings -->
+        <div class="mb-8 p-5 border border-gray-200 rounded-lg bg-gray-50">
+            <label class="block text-sm font-semibold mb-4 text-gray-700">3. Fine-Tune Settings</label>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Max Resolution</label>
+                    <select id="maxRes" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white">
+                        <option value="all">4K & Below</option>
+                        <option value="1080p">1080p & Below</option>
+                        <option value="720p">720p & Below</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Sort Links By</label>
+                    <select id="sort" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white">
+                        <option value="quality">Quality (Highest first)</option>
+                        <option value="size">Size (Smallest first)</option>
+                        <option value="qualitysize">Quality, then Size</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Results Per Quality</label>
+                    <select id="limit" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white">
+                        <option value="all">Show All</option>
+                        <option value="1">1 Link</option>
+                        <option value="3">3 Links</option>
+                        <option value="5">5 Links</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="flex items-center text-sm cursor-pointer">
+                    <input type="checkbox" id="cachedOnly" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
+                    Only show instant-play links (Highly Recommended)
+                </label>
+                <label class="flex items-center text-sm cursor-pointer">
+                    <input type="checkbox" id="hideCams" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
+                    Hide theater recordings (CAMs/Screeners)
+                </label>
+            </div>
+        </div>
+
+        <!-- Step 4: Action Area -->
+        <div id="resultArea" class="mt-8 pt-6 border-t text-center">
+            <a id="installBtn" href="#" onclick="checkApiKey(event)" class="block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition shadow-md">
                 Install to Stremio
             </a>
             <p class="text-xs text-gray-500 mt-4">Make sure the Stremio app is installed on this device before clicking.</p>
@@ -57,45 +96,110 @@
 
     <!-- The Logic -->
     <script>
-        function setProfile(profile, btnElement) {
+        // Preset profile configurations
+        const profiles = {
+            netflix: {
+                maxRes: 'all',
+                sort: 'quality',
+                limit: '1',
+                cachedOnly: true,
+                hideCams: true
+            },
+            datasaver: {
+                maxRes: '1080p',
+                sort: 'size',
+                limit: '3',
+                cachedOnly: true,
+                hideCams: true
+            },
+            cinephile: {
+                maxRes: 'all',
+                sort: 'quality',
+                limit: 'all',
+                cachedOnly: true,
+                hideCams: true
+            }
+        };
+
+        // Apply profile settings to form
+        function applyProfile(profileKey) {
+            const profile = profiles[profileKey];
+            
+            document.getElementById('maxRes').value = profile.maxRes;
+            document.getElementById('sort').value = profile.sort;
+            document.getElementById('limit').value = profile.limit;
+            document.getElementById('cachedOnly').checked = profile.cachedOnly;
+            document.getElementById('hideCams').checked = profile.hideCams;
+
+            updateLink();
+        }
+
+        // Validate API Key before installation
+        function checkApiKey(event) {
             const apiKey = document.getElementById('apiKey').value.trim();
             if (!apiKey) {
-                alert('Please enter your Torbox API key first.');
-                return;
+                event.preventDefault(); // Stop the link from opening
+                alert('Please enter your Torbox API key in Step 1 before installing.');
             }
-
-            // Optional: Visually highlight the selected button
-            document.querySelectorAll('.profile-btn').forEach(btn => {
-                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
-            });
-            btnElement.classList.add('ring-2', 'ring-offset-2', 'ring-blue-500');
-
-            let config = '';
-            
-            // Torrentio configuration mapping
-            if (profile === 'fast') {
-                // Sort by size (smallest first), filter out 4K, CAMs, screeners, hide non-debrid links
-                config = 'sort=size|qualityfilter=4k,cam,screener|debridoptions=nodownloadlinks';
-            } else if (profile === 'balanced') {
-                // Sort by quality then size, filter out CAMs, screeners, hide non-debrid links
-                config = 'sort=qualitysize|qualityfilter=cam,screener|debridoptions=nodownloadlinks';
-            } else if (profile === 'quality') {
-                // Sort purely by quality, hide non-debrid links
-                config = 'sort=quality|debridoptions=nodownloadlinks';
-            }
-
-            // Append Torbox API Key
-            config += `|torbox=${apiKey}`;
-
-            // Generate URLs
-            const manifestUrl = `${config}/manifest.json`;
-            // Using stremio:// automatically triggers the app to open
-            const stremioUrl = `stremio://torrentio.strem.fun/${manifestUrl}`;
-            
-            // Update UI
-            document.getElementById('installBtn').href = stremioUrl;
-            document.getElementById('resultArea').classList.remove('hidden');
         }
+
+        // Generate the Stremio URL based on current form state
+        function updateLink() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            
+            // Read UI states
+            const maxRes = document.getElementById('maxRes').value;
+            const sort = document.getElementById('sort').value;
+            const limit = document.getElementById('limit').value;
+            const cachedOnly = document.getElementById('cachedOnly').checked;
+            const hideCams = document.getElementById('hideCams').checked;
+
+            // Build configuration array
+            let configParts = [];
+
+            // 1. Sorting
+            configParts.push(`sort=${sort}`);
+
+            // 2. Limits
+            if (limit !== 'all') {
+                configParts.push(`limit=${limit}`);
+            }
+
+            // 3. Quality Filters (What to hide)
+            let excludedQualities = [];
+            
+            if (hideCams) excludedQualities.push('cam', 'screener');
+            
+            if (maxRes === '1080p') excludedQualities.push('4k');
+            if (maxRes === '720p') excludedQualities.push('4k', '1080p');
+
+            if (excludedQualities.length > 0) {
+                configParts.push(`qualityfilter=${excludedQualities.join(',')}`);
+            }
+
+            // 4. Debrid Options
+            let debridOpts = ['nocatalog']; // Hides the annoying Torbox catalog by default
+            if (cachedOnly) {
+                debridOpts.push('nodownloadlinks'); // Only show instantly playable cached links
+            }
+            configParts.push(`debridoptions=${debridOpts.join(',')}`);
+
+            // 5. Append API Key
+            // Note: Even if empty during editing, we append it so the structure is ready.
+            // The checkApiKey() function prevents clicking if it's blank.
+            configParts.push(`torbox=${apiKey}`);
+
+            // Construct Final URLs
+            const configString = configParts.join('|');
+            const manifestUrl = `${configString}/manifest.json`;
+            const stremioUrl = `stremio://torrentio.strem.fun/${manifestUrl}`;
+
+            // Update Install Button
+            document.getElementById('installBtn').href = stremioUrl;
+        }
+
+        // Initialize link on page load just in case
+        window.onload = updateLink;
     </script>
 </body>
 </html>
