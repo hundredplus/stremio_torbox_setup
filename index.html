@@ -1,80 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Stremio + TorBox Setup</title>
+  <meta charset="UTF-8">
+  <title>Noontech Stremio Setup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #0f172a;
       color: #e2e8f0;
-      text-align: center;
-      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    .card {
-      max-width: 500px;
-      margin: auto;
+
+    .container {
       background: #1e293b;
       padding: 30px;
-      border-radius: 12px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
-    input {
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
       width: 100%;
       padding: 12px;
-      margin-top: 15px;
-      border-radius: 8px;
+      margin-top: 10px;
+      border-radius: 10px;
       border: none;
       font-size: 14px;
     }
+
+    input {
+      background: #0f172a;
+      color: #fff;
+    }
+
+    select {
+      background: #0f172a;
+      color: #fff;
+    }
+
     button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #22c55e;
-      color: white;
-      font-size: 16px;
+      background: #38bdf8;
+      color: black;
+      font-weight: bold;
       cursor: pointer;
     }
-    .secondary {
-      background: #3b82f6;
+
+    button:hover {
+      background: #0ea5e9;
     }
+
+    .output {
+      margin-top: 15px;
+      word-break: break-all;
+      font-size: 12px;
+      background: #020617;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .install-btn {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      padding: 12px;
+      background: #22c55e;
+      border-radius: 10px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+
+    .install-btn:hover {
+      background: #16a34a;
+    }
+
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>🎬 Stremio + TorBox Setup</h2>
 
-    <p><b>Step 1:</b> Login to TorBox</p>
-    <button class="secondary" onclick="window.open('https://torbox.app/login','_blank')">
-      Open TorBox Login
-    </button>
+<div class="container">
+  <h1>🚀 Noontech Setup</h1>
 
-    <p><b>Step 2:</b> Get API Key</p>
-    <button class="secondary" onclick="window.open('https://torbox.app/settings/api','_blank')">
-      Open API Page
-    </button>
+  <label>Torbox API Key</label>
+  <input type="text" id="apiKey" placeholder="Paste your API key here">
 
-    <p><b>Step 3:</b> Paste API Key</p>
-    <input id="apiKey" placeholder="Paste API key here..." />
+  <label>Streaming Profile</label>
+  <select id="profile">
+    <option value="fast">⚡ No Buffer (Fast)</option>
+    <option value="balanced">🎬 Balanced</option>
+    <option value="quality">💎 Best Quality</option>
+  </select>
 
-    <button onclick="install()">Install Addon</button>
+  <button onclick="generate()">Generate Install Link</button>
+
+  <div id="result" style="display:none;">
+    <a id="installLink" class="install-btn">👉 Install in Stremio</a>
+
+    <div class="output" id="rawLink"></div>
   </div>
+</div>
 
-  <script>
-    function install() {
-      const key = document.getElementById('apiKey').value.trim();
-      if (!key) {
-        alert('Please paste your API key');
-        return;
-      }
+<script>
+function generate() {
+  const apiKey = document.getElementById("apiKey").value.trim();
+  const profile = document.getElementById("profile").value;
 
-      const url = `stremio://aio-stream-addon.vercel.app/manifest.json?provider=torbox&cachedOnly=true&sort=seeders&quality=1080p,2160p&exclude=cam&apiKey=${key}`;
-      window.location.href = url;
-    }
-  </script>
+  if (!apiKey) {
+    alert("Please enter your Torbox API key");
+    return;
+  }
+
+  let config = {
+    apiKey: apiKey,
+    cachedOnly: true,
+    sort: "seeders",
+    timeout: 40,
+    maxQuality: "1080p"
+  };
+
+  if (profile === "fast") {
+    config.maxQuality = "1080p";
+    config.timeout = 30;
+  }
+
+  if (profile === "balanced") {
+    config.maxQuality = "4K";
+    config.timeout = 40;
+  }
+
+  if (profile === "quality") {
+    config.maxQuality = "4K";
+    config.timeout = 60;
+  }
+
+  const encoded = btoa(JSON.stringify(config));
+
+  const manifestUrl = `https://YOUR-ADDON-URL/manifest.json?config=${encoded}`;
+
+  const deepLink = `stremio://addon-install?url=${encodeURIComponent(manifestUrl)}`;
+
+  document.getElementById("installLink").href = deepLink;
+  document.getElementById("rawLink").innerText = deepLink;
+
+  document.getElementById("result").style.display = "block";
+}
+</script>
+
 </body>
 </html>
