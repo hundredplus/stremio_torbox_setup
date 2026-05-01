@@ -5,87 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stremio + Torbox Setup</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Smooth transition for the settings panel */
+        #advancedSettings { transition: all 0.3s ease-in-out; }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans p-6 md:p-12">
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
-        <h1 class="text-2xl font-bold text-center mb-2">Connect Torbox to Stremio</h1>
-        <p class="text-center text-gray-500 mb-8 text-sm">The easiest, 1-click configuration tool.</p>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-800 font-sans p-4 md:p-12 min-h-screen flex items-center justify-center">
+    <div class="max-w-2xl w-full bg-white p-6 md:p-10 rounded-2xl shadow-xl border border-gray-100">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Connect Torbox to Stremio</h1>
+            <p class="text-gray-500 text-sm">The easiest, 1-click configuration tool.</p>
+        </div>
         
         <!-- Step 1: API Key -->
-        <div class="mb-8">
-            <h2 class="block text-lg font-bold mb-3 text-gray-800">Step 1: Enter Your Torbox API Key</h2>
+        <div class="mb-10">
+            <h2 class="flex items-center text-lg font-bold mb-3 text-gray-800">
+                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                Step 1: Enter Your Torbox API Key
+            </h2>
             <div class="flex flex-col sm:flex-row gap-2 mb-2">
-                <a href="https://torbox.app/settings" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold py-3 px-4 sm:py-2 rounded-lg transition flex items-center justify-center whitespace-nowrap">
+                <a href="https://torbox.app/settings" target="_blank" class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-800 text-sm font-semibold py-3 px-4 sm:py-2 rounded-lg transition-colors flex items-center justify-center whitespace-nowrap shadow-sm">
                     Get My Key ↗
                 </a>
-                <input type="text" id="apiKey" oninput="updateLink()" class="w-full p-3 sm:p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Paste key here...">
+                <input type="text" id="apiKey" oninput="updateLink()" class="w-full p-3 sm:p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow" placeholder="Paste your key here...">
             </div>
-            <p class="text-xs text-gray-500 mb-5">Copy the long string under the API section and paste it here.</p>
+            <p class="text-xs text-gray-500 mb-6 ml-1">Copy the long string under the API section in your Torbox settings.</p>
             
             <!-- Redesigned Referral Banner -->
-            <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
                 <div class="flex items-center gap-3 text-center sm:text-left w-full sm:w-auto">
-                    <div class="bg-white p-2 rounded-full shadow-sm text-xl hidden sm:block">🎁</div>
+                    <div class="bg-white p-2 rounded-full shadow-sm text-xl hidden sm:block">✨</div>
                     <div>
-                        <p class="text-sm font-bold text-green-800">Don't have an account yet?</p>
-                        <p class="text-xs text-green-700 mt-1">Get <span class="font-bold">+7 bonus days/mo</span> (or <span class="font-bold">+84 days/yr</span>) when you sign up using the link below.</p>
+                        <p class="text-sm font-bold text-emerald-900">Don't have an account yet?</p>
+                        <p class="text-xs text-emerald-700 mt-1">Get <span class="font-bold">+7 bonus days/mo</span> (or <span class="font-bold">+84 days/yr</span>) when you sign up using the link below.</p>
                     </div>
                 </div>
-                <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="w-full sm:w-auto text-center bg-green-600 text-white text-sm font-bold py-2.5 px-5 rounded-lg hover:bg-green-700 transition whitespace-nowrap shadow-md">
+                <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="w-full sm:w-auto text-center bg-emerald-600 text-white text-sm font-bold py-2.5 px-5 rounded-lg hover:bg-emerald-700 transition shadow-md whitespace-nowrap">
                     Create Account
                 </a>
             </div>
         </div>
 
         <!-- Step 2: Profiles -->
-        <div class="mb-8 border-t pt-6 border-gray-200">
-            <h2 class="block text-lg font-bold mb-3 text-gray-800">Step 2: Choose a Quick Profile</h2>
-            <p class="text-sm text-gray-500 mb-4">Click one of the options below to automatically configure the best settings for you.</p>
+        <div class="mb-8 border-t pt-8 border-gray-100">
+            <h2 class="flex items-center text-lg font-bold mb-2 text-gray-800">
+                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Step 2: Choose a Quick Profile
+            </h2>
+            <p class="text-sm text-gray-500 mb-4 ml-1">Select an option to automatically configure the best settings.</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <button onclick="applyProfile('netflix', this)" class="profile-btn p-3 border border-gray-300 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 transition text-left outline-none">
+                <button id="btn-netflix" onclick="applyProfile('netflix', this)" class="profile-btn p-4 border rounded-xl transition text-left outline-none transform hover:-translate-y-0.5 shadow-sm">
                     <div class="font-bold text-blue-600">"Netflix" Mode</div>
-                    <div class="text-xs text-gray-600 mt-1">Super clean. 1 link per quality, instant play only.</div>
+                    <div class="text-xs text-gray-600 mt-1 leading-relaxed">Super clean. 1 link per quality, instant play only.</div>
                 </button>
-                <button onclick="applyProfile('datasaver', this)" class="profile-btn p-3 border border-gray-300 rounded-lg hover:bg-green-50 focus:ring-2 focus:ring-green-500 transition text-left outline-none">
+                <button id="btn-datasaver" onclick="applyProfile('datasaver', this)" class="profile-btn p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition text-left outline-none transform hover:-translate-y-0.5 shadow-sm">
                     <div class="font-bold text-green-600">Data Saver</div>
-                    <div class="text-xs text-gray-600 mt-1">1080p max. Smallest file sizes, instant play only.</div>
+                    <div class="text-xs text-gray-600 mt-1 leading-relaxed">1080p max. Smallest file sizes, instant play only.</div>
                 </button>
-                <button onclick="applyProfile('cinephile', this)" class="profile-btn p-3 border border-gray-300 rounded-lg hover:bg-purple-50 focus:ring-2 focus:ring-purple-500 transition text-left outline-none">
+                <button id="btn-cinephile" onclick="applyProfile('cinephile', this)" class="profile-btn p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition text-left outline-none transform hover:-translate-y-0.5 shadow-sm">
                     <div class="font-bold text-purple-600">Cinephile</div>
-                    <div class="text-xs text-gray-600 mt-1">Highest quality 4K files. Shows more options.</div>
+                    <div class="text-xs text-gray-600 mt-1 leading-relaxed">Highest quality 4K files. Shows more options.</div>
                 </button>
             </div>
         </div>
 
-        <!-- Step 3: Advanced Settings (Hidden by default) -->
-        <div class="mb-8 p-5 border border-gray-200 rounded-lg bg-gray-50">
-            <button onclick="toggleSettings()" class="w-full flex justify-between items-center text-left outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-1">
-                <h2 class="text-lg font-bold text-gray-700">Step 3: Fine-Tune Settings <span class="text-sm font-normal text-gray-500">(Optional)</span></h2>
-                <span id="toggleIcon" class="text-gray-500 text-sm font-bold">▼</span>
+        <!-- Step 3: Advanced Settings -->
+        <div class="mb-10 p-5 border border-gray-200 rounded-xl bg-gray-50 shadow-inner">
+            <button onclick="toggleSettings()" class="w-full flex justify-between items-center text-left outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-1 group">
+                <h2 class="flex items-center text-md font-bold text-gray-700 group-hover:text-blue-600 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    Step 3: Fine-Tune Settings <span class="text-xs font-normal text-gray-500 ml-2">(Optional)</span>
+                </h2>
+                <span id="toggleIcon" class="text-gray-400 text-xs font-bold transition-transform transform">▼</span>
             </button>
             
-            <!-- Hidden Settings Div -->
-            <div id="advancedSettings" class="hidden mt-4 pt-4 border-t border-gray-200">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div id="advancedSettings" class="hidden mt-5 pt-5 border-t border-gray-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                     <div>
-                        <label class="block text-xs font-semibold mb-1">Max Resolution</label>
-                        <select id="maxRes" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
+                        <label class="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Max Resolution</label>
+                        <select id="maxRes" onchange="updateLink()" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">4K & Below</option>
                             <option value="1080p">1080p & Below</option>
                             <option value="720p">720p & Below</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold mb-1">Sort Links By</label>
-                        <select id="sort" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
+                        <label class="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Sort Links By</label>
+                        <select id="sort" onchange="updateLink()" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="quality">Quality (Highest first)</option>
                             <option value="size">Size (Smallest first)</option>
                             <option value="qualitysize">Quality, then Size</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold mb-1">Results Per Quality</label>
-                        <select id="limit" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
+                        <label class="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Results Per Quality</label>
+                        <select id="limit" onchange="updateLink()" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">Show All</option>
                             <option value="1">1 Link</option>
                             <option value="3">3 Links</option>
@@ -94,44 +109,59 @@
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="flex items-center text-sm cursor-pointer">
-                        <input type="checkbox" id="cachedOnly" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
-                        Only show instant-play links (Highly Recommended)
+                <div class="space-y-3 bg-white p-4 rounded-lg border border-gray-200">
+                    <label class="flex items-start text-sm cursor-pointer group">
+                        <input type="checkbox" id="cachedOnly" onchange="updateLink()" class="mt-1 mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                        <div>
+                            <span class="font-semibold text-gray-800 block">Only show instant-play links</span>
+                            <span class="text-xs text-gray-500">Highly recommended. Hides files that Torbox needs to download first.</span>
+                        </div>
                     </label>
-                    <label class="flex items-center text-sm cursor-pointer">
-                        <input type="checkbox" id="hideCams" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
-                        Hide theater recordings (CAMs/Screeners)
+                    <label class="flex items-start text-sm cursor-pointer group pt-2 border-t border-gray-100">
+                        <input type="checkbox" id="hideCams" onchange="updateLink()" class="mt-1 mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                        <div>
+                            <span class="font-semibold text-gray-800 block">Hide theater recordings</span>
+                            <span class="text-xs text-gray-500">Filters out CAMs and Screeners.</span>
+                        </div>
                     </label>
                 </div>
             </div>
         </div>
 
         <!-- Step 4: Action Area -->
-        <div id="resultArea" class="mt-8 pt-6 border-t text-center border-gray-200">
-            <h2 class="block text-lg font-bold mb-4 text-gray-800">Step 4: Finish</h2>
-            <a id="installBtn" href="#" onclick="checkApiKey(event)" class="block w-full bg-blue-600 text-white font-bold py-4 px-4 rounded-lg hover:bg-blue-700 transition shadow-lg text-lg">
+        <div id="resultArea" class="mt-8 pt-8 border-t border-gray-200 text-center">
+            <a id="installBtn" href="#" class="block w-full bg-gray-300 text-gray-500 font-bold py-4 px-4 rounded-xl cursor-not-allowed transition-all duration-300 text-lg flex justify-center items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 Install to Stremio
             </a>
-            <p class="text-xs text-gray-500 mt-4">Make sure the Stremio app is installed on this device before clicking.</p>
+            
+            <div class="mt-4 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-2">
+                <p>Make sure Stremio is installed before clicking.</p>
+                <!-- Fallback button if stremio:// link fails -->
+                <button id="copyBtn" onclick="copyRawLink()" class="hidden text-blue-600 hover:text-blue-800 font-semibold transition">
+                    Button not working? Copy raw link.
+                </button>
+            </div>
         </div>
 
-        <!-- Gratitude / Referral Section -->
-        <div class="mt-10 bg-gradient-to-r from-indigo-50 to-blue-50 border border-blue-100 p-6 rounded-xl text-center shadow-inner">
-            <h3 class="text-lg font-bold text-gray-800 mb-2">Want to say thanks? ❤️</h3>
-            <p class="text-sm text-gray-600 mb-4">
-                If this tool saved you a headache, the best way to support me is by using my link to grab your Torbox subscription or extend your current one. 
+        <!-- Revised Gratitude / Referral Section -->
+        <div class="mt-12 bg-blue-50 border border-blue-100 p-6 rounded-2xl text-center shadow-inner relative overflow-hidden">
+            <!-- Decorative background blob -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-100 rounded-full opacity-50 blur-2xl"></div>
+            
+            <h3 class="text-xl font-extrabold text-blue-900 mb-2 relative z-10">🎁 Claim Your Bonus Days (Win-Win!)</h3>
+            <p class="text-sm text-blue-800 mb-5 relative z-10 max-w-md mx-auto">
+                If this tool saved you some time, using the link below to extend or start your Torbox subscription helps support this project—at zero cost to you.
             </p>
-            <div class="bg-white border border-green-200 p-3 rounded-lg inline-block w-full mb-5 shadow-sm text-center">
-                <p class="text-sm font-bold text-green-700">
-                    🎁 Win-Win Bonus!
-                </p>
-                <p class="text-xs text-green-600 mt-1">
-                    By using the link below, you get an <span class="font-bold">extra 7 days</span> for every month you subscribe, or <span class="font-bold">84 bonus days</span> for a 1-year plan!
+            
+            <div class="bg-white/80 backdrop-blur-sm border border-blue-200 p-3 rounded-xl inline-block w-full mb-5 shadow-sm relative z-10">
+                <p class="text-sm font-bold text-blue-800 block">
+                    You get an extra <span class="text-blue-600">7 days per month</span> or <span class="text-blue-600">84 days per year</span> added to your account!
                 </p>
             </div>
-            <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition shadow-md w-full sm:w-auto">
-                Subscribe & Claim Bonus Days
+            
+            <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="relative z-10 inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-blue-700 transition shadow-lg transform hover:-translate-y-0.5 w-full sm:w-auto">
+                Subscribe & Claim Bonus
             </a>
         </div>
     </div>
@@ -139,28 +169,12 @@
     <!-- The Logic -->
     <script>
         const profiles = {
-            netflix: {
-                maxRes: 'all',
-                sort: 'quality',
-                limit: '1',
-                cachedOnly: true,
-                hideCams: true
-            },
-            datasaver: {
-                maxRes: '1080p',
-                sort: 'size',
-                limit: '3',
-                cachedOnly: true,
-                hideCams: true
-            },
-            cinephile: {
-                maxRes: 'all',
-                sort: 'quality',
-                limit: 'all',
-                cachedOnly: true,
-                hideCams: true
-            }
+            netflix: { maxRes: 'all', sort: 'quality', limit: '1', cachedOnly: true, hideCams: true },
+            datasaver: { maxRes: '1080p', sort: 'size', limit: '3', cachedOnly: true, hideCams: true },
+            cinephile: { maxRes: 'all', sort: 'quality', limit: 'all', cachedOnly: true, hideCams: true }
         };
+
+        let currentManifestUrl = "";
 
         function toggleSettings() {
             const settingsDiv = document.getElementById('advancedSettings');
@@ -168,93 +182,103 @@
             
             if (settingsDiv.classList.contains('hidden')) {
                 settingsDiv.classList.remove('hidden');
-                icon.textContent = '▲';
+                icon.style.transform = 'rotate(-180deg)';
             } else {
                 settingsDiv.classList.add('hidden');
-                icon.textContent = '▼';
+                icon.style.transform = 'rotate(0deg)';
             }
         }
 
         function applyProfile(profileKey, btnElement) {
-            // Apply visual active state to the clicked button
+            // Reset button styles
             document.querySelectorAll('.profile-btn').forEach(btn => {
-                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500', 'ring-green-500', 'ring-purple-500', 'bg-gray-50');
+                btn.classList.remove('ring-2', 'ring-blue-500', 'ring-green-500', 'ring-purple-500', 'bg-blue-50', 'bg-green-50', 'bg-purple-50', 'border-transparent');
+                btn.classList.add('border-gray-200');
             });
             
-            if(profileKey === 'netflix') btnElement.classList.add('ring-2', 'ring-blue-500', 'bg-blue-50');
-            if(profileKey === 'datasaver') btnElement.classList.add('ring-2', 'ring-green-500', 'bg-green-50');
-            if(profileKey === 'cinephile') btnElement.classList.add('ring-2', 'ring-purple-500', 'bg-purple-50');
+            // Apply active styles
+            if(profileKey === 'netflix') { btnElement.classList.add('ring-2', 'ring-blue-500', 'bg-blue-50', 'border-transparent'); btnElement.classList.remove('border-gray-200'); }
+            if(profileKey === 'datasaver') { btnElement.classList.add('ring-2', 'ring-green-500', 'bg-green-50', 'border-transparent'); btnElement.classList.remove('border-gray-200'); }
+            if(profileKey === 'cinephile') { btnElement.classList.add('ring-2', 'ring-purple-500', 'bg-purple-50', 'border-transparent'); btnElement.classList.remove('border-gray-200'); }
 
-            // Apply underlying settings
             const profile = profiles[profileKey];
             document.getElementById('maxRes').value = profile.maxRes;
             document.getElementById('sort').value = profile.sort;
             document.getElementById('limit').value = profile.limit;
             document.getElementById('cachedOnly').checked = profile.cachedOnly;
             document.getElementById('hideCams').checked = profile.hideCams;
-            updateLink();
             
-            // Auto-expand settings so they see what changed
-            const settingsDiv = document.getElementById('advancedSettings');
-            const icon = document.getElementById('toggleIcon');
-            if (settingsDiv.classList.contains('hidden')) {
-                settingsDiv.classList.remove('hidden');
-                icon.textContent = '▲';
-            }
-        }
-
-        function checkApiKey(event) {
-            const apiKey = document.getElementById('apiKey').value.trim();
-            if (!apiKey) {
-                event.preventDefault(); 
-                alert('Please enter your Torbox API key in Step 1 before installing.');
-            }
+            updateLink();
         }
 
         function updateLink() {
             const apiKey = document.getElementById('apiKey').value.trim();
+            const installBtn = document.getElementById('installBtn');
+            const copyBtn = document.getElementById('copyBtn');
+
+            // Building the configuration
             const maxRes = document.getElementById('maxRes').value;
             const sort = document.getElementById('sort').value;
             const limit = document.getElementById('limit').value;
             const cachedOnly = document.getElementById('cachedOnly').checked;
             const hideCams = document.getElementById('hideCams').checked;
 
-            let configParts = [];
-            configParts.push(`sort=${sort}`);
-
-            if (limit !== 'all') {
-                configParts.push(`limit=${limit}`);
-            }
+            let configParts = [`sort=${sort}`];
+            if (limit !== 'all') configParts.push(`limit=${limit}`);
 
             let excludedQualities = [];
             if (hideCams) excludedQualities.push('cam', 'screener');
             if (maxRes === '1080p') excludedQualities.push('4k');
             if (maxRes === '720p') excludedQualities.push('4k', '1080p');
-
-            if (excludedQualities.length > 0) {
-                configParts.push(`qualityfilter=${excludedQualities.join(',')}`);
-            }
+            if (excludedQualities.length > 0) configParts.push(`qualityfilter=${excludedQualities.join(',')}`);
 
             let debridOpts = ['nocatalog']; 
-            if (cachedOnly) {
-                debridOpts.push('nodownloadlinks'); 
-            }
+            if (cachedOnly) debridOpts.push('nodownloadlinks'); 
             configParts.push(`debridoptions=${debridOpts.join(',')}`);
             
-            if (apiKey) {
-                configParts.push(`torbox=${apiKey}`);
-            } else {
-                configParts.push(`torbox=YOUR_API_KEY_HERE`);
-            }
+            if (apiKey) configParts.push(`torbox=${apiKey}`);
 
             const configString = configParts.join('|');
             const manifestUrl = `${configString}/manifest.json`;
+            
+            // Store the raw https link for the copy fallback
+            currentManifestUrl = `https://torrentio.strem.fun/${manifestUrl}`;
+            
+            // The Stremio Protocol Link
             const stremioUrl = `stremio://torrentio.strem.fun/${manifestUrl}`;
 
-            document.getElementById('installBtn').href = stremioUrl;
+            // Smart Button State Management
+            if (apiKey.length > 10) { // Basic check to see if *something* is pasted
+                installBtn.href = stremioUrl;
+                installBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+                installBtn.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700', 'shadow-lg', 'transform', 'hover:-translate-y-0.5');
+                copyBtn.classList.remove('hidden'); // Show fallback copy button
+            } else {
+                installBtn.href = "#";
+                installBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+                installBtn.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700', 'shadow-lg', 'transform', 'hover:-translate-y-0.5');
+                copyBtn.classList.add('hidden'); // Hide fallback copy button
+            }
         }
 
-        window.onload = updateLink;
+        function copyRawLink() {
+            navigator.clipboard.writeText(currentManifestUrl).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerText;
+                btn.innerText = "Link Copied! Paste it into Stremio search.";
+                btn.classList.add('text-green-600');
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove('text-green-600');
+                }, 3000);
+            });
+        }
+
+        // Initialize default profile on page load
+        window.onload = () => {
+            applyProfile('netflix', document.getElementById('btn-netflix'));
+        };
     </script>
 </body>
 </html>
