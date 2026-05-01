@@ -13,7 +13,7 @@
         
         <!-- Step 1: API Key -->
         <div class="mb-8">
-            <label class="block text-sm font-semibold mb-2" for="apiKey">1. Enter Your Torbox API Key</label>
+            <h2 class="block text-lg font-bold mb-3 text-gray-800">Step 1: Enter Your Torbox API Key</h2>
             <div class="flex flex-col sm:flex-row gap-2 mb-2">
                 <a href="https://torbox.app/settings" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold py-3 px-4 sm:py-2 rounded-lg transition flex items-center justify-center whitespace-nowrap">
                     Get My Key ↗
@@ -30,8 +30,9 @@
         </div>
 
         <!-- Step 2: Profiles -->
-        <div class="mb-8">
-            <label class="block text-sm font-semibold mb-2">2. Quick Profiles (Optional)</label>
+        <div class="mb-8 border-t pt-6 border-gray-200">
+            <h2 class="block text-lg font-bold mb-3 text-gray-800">Step 2: Choose a Quick Profile</h2>
+            <p class="text-sm text-gray-500 mb-4">Click one of the options below to automatically configure the best settings for you.</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <button onclick="applyProfile('netflix')" class="p-3 border border-gray-300 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 transition text-left outline-none">
                     <div class="font-bold text-blue-600">"Netflix" Mode</div>
@@ -48,52 +49,59 @@
             </div>
         </div>
 
-        <!-- Step 3: Advanced Settings -->
+        <!-- Step 3: Advanced Settings (Hidden by default) -->
         <div class="mb-8 p-5 border border-gray-200 rounded-lg bg-gray-50">
-            <label class="block text-sm font-semibold mb-4 text-gray-700">3. Fine-Tune Settings</label>
+            <button onclick="toggleSettings()" class="w-full flex justify-between items-center text-left outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-1">
+                <h2 class="text-lg font-bold text-gray-700">Step 3: Fine-Tune Settings <span class="text-sm font-normal text-gray-500">(Optional)</span></h2>
+                <span id="toggleIcon" class="text-gray-500 text-sm font-bold">▼</span>
+            </button>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-xs font-semibold mb-1">Max Resolution</label>
-                    <select id="maxRes" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
-                        <option value="all">4K & Below</option>
-                        <option value="1080p">1080p & Below</option>
-                        <option value="720p">720p & Below</option>
-                    </select>
+            <!-- Hidden Settings Div -->
+            <div id="advancedSettings" class="hidden mt-4 pt-4 border-t border-gray-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Max Resolution</label>
+                        <select id="maxRes" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
+                            <option value="all">4K & Below</option>
+                            <option value="1080p">1080p & Below</option>
+                            <option value="720p">720p & Below</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Sort Links By</label>
+                        <select id="sort" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
+                            <option value="quality">Quality (Highest first)</option>
+                            <option value="size">Size (Smallest first)</option>
+                            <option value="qualitysize">Quality, then Size</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Results Per Quality</label>
+                        <select id="limit" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
+                            <option value="all">Show All</option>
+                            <option value="1">1 Link</option>
+                            <option value="3">3 Links</option>
+                            <option value="5">5 Links</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1">Sort Links By</label>
-                    <select id="sort" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
-                        <option value="quality">Quality (Highest first)</option>
-                        <option value="size">Size (Smallest first)</option>
-                        <option value="qualitysize">Quality, then Size</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1">Results Per Quality</label>
-                    <select id="limit" onchange="updateLink()" class="w-full p-2 border rounded text-sm bg-white outline-none">
-                        <option value="all">Show All</option>
-                        <option value="1">1 Link</option>
-                        <option value="3">3 Links</option>
-                        <option value="5">5 Links</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="space-y-2">
-                <label class="flex items-center text-sm cursor-pointer">
-                    <input type="checkbox" id="cachedOnly" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
-                    Only show instant-play links (Highly Recommended)
-                </label>
-                <label class="flex items-center text-sm cursor-pointer">
-                    <input type="checkbox" id="hideCams" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
-                    Hide theater recordings (CAMs/Screeners)
-                </label>
+                <div class="space-y-2">
+                    <label class="flex items-center text-sm cursor-pointer">
+                        <input type="checkbox" id="cachedOnly" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
+                        Only show instant-play links (Highly Recommended)
+                    </label>
+                    <label class="flex items-center text-sm cursor-pointer">
+                        <input type="checkbox" id="hideCams" onchange="updateLink()" class="mr-2 h-4 w-4 text-blue-600 rounded">
+                        Hide theater recordings (CAMs/Screeners)
+                    </label>
+                </div>
             </div>
         </div>
 
         <!-- Step 4: Action Area -->
-        <div id="resultArea" class="mt-8 pt-6 border-t text-center">
+        <div id="resultArea" class="mt-8 pt-6 border-t text-center border-gray-200">
+            <h2 class="block text-lg font-bold mb-4 text-gray-800">Step 4: Finish</h2>
             <a id="installBtn" href="#" onclick="checkApiKey(event)" class="block w-full bg-blue-600 text-white font-bold py-4 px-4 rounded-lg hover:bg-blue-700 transition shadow-lg text-lg">
                 Install to Stremio
             </a>
@@ -146,6 +154,19 @@
             }
         };
 
+        function toggleSettings() {
+            const settingsDiv = document.getElementById('advancedSettings');
+            const icon = document.getElementById('toggleIcon');
+            
+            if (settingsDiv.classList.contains('hidden')) {
+                settingsDiv.classList.remove('hidden');
+                icon.textContent = '▲';
+            } else {
+                settingsDiv.classList.add('hidden');
+                icon.textContent = '▼';
+            }
+        }
+
         function applyProfile(profileKey) {
             const profile = profiles[profileKey];
             document.getElementById('maxRes').value = profile.maxRes;
@@ -154,6 +175,14 @@
             document.getElementById('cachedOnly').checked = profile.cachedOnly;
             document.getElementById('hideCams').checked = profile.hideCams;
             updateLink();
+            
+            // Optional: Auto-expand the settings so users can see what the profile just changed
+            const settingsDiv = document.getElementById('advancedSettings');
+            const icon = document.getElementById('toggleIcon');
+            if (settingsDiv.classList.contains('hidden')) {
+                settingsDiv.classList.remove('hidden');
+                icon.textContent = '▲';
+            }
         }
 
         function checkApiKey(event) {
@@ -193,7 +222,12 @@
                 debridOpts.push('nodownloadlinks'); 
             }
             configParts.push(`debridoptions=${debridOpts.join(',')}`);
-            configParts.push(`torbox=${apiKey}`);
+            
+            if (apiKey) {
+                configParts.push(`torbox=${apiKey}`);
+            } else {
+                configParts.push(`torbox=YOUR_API_KEY_HERE`);
+            }
 
             const configString = configParts.join('|');
             const manifestUrl = `${configString}/manifest.json`;
