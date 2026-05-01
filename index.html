@@ -20,10 +20,12 @@
                 </a>
                 <input type="text" id="apiKey" oninput="updateLink()" class="w-full p-3 sm:p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Paste key here...">
             </div>
-            <div class="flex justify-between items-center text-xs">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs mt-3 gap-2 border-t pt-2 border-gray-100">
                 <p class="text-gray-500">Copy the long string under the API section and paste it here.</p>
-                <!-- Subtle Referral Link for New Users -->
-                <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="text-blue-600 hover:underline font-semibold">Need an account?</a>
+                <div class="sm:text-right bg-green-50 p-2 rounded-md border border-green-100 w-full sm:w-auto">
+                    <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="text-blue-700 hover:underline font-bold text-sm">Create a Torbox account</a>
+                    <p class="text-green-700 font-medium mt-0.5">🎁 Get +7 bonus days/mo (or +84 days/yr!)</p>
+                </div>
             </div>
         </div>
 
@@ -99,13 +101,21 @@
         </div>
 
         <!-- Gratitude / Referral Section -->
-        <div class="mt-10 bg-gradient-to-r from-indigo-50 to-blue-50 border border-blue-100 p-6 rounded-xl text-center">
+        <div class="mt-10 bg-gradient-to-r from-indigo-50 to-blue-50 border border-blue-100 p-6 rounded-xl text-center shadow-inner">
             <h3 class="text-lg font-bold text-gray-800 mb-2">Want to say thanks? ❤️</h3>
             <p class="text-sm text-gray-600 mb-4">
-                If this tool saved you a headache, the best way to support me is by using my link to grab your Torbox subscription or extend your current one. It costs you absolutely nothing extra!
+                If this tool saved you a headache, the best way to support me is by using my link to grab your Torbox subscription or extend your current one. 
             </p>
-            <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="inline-block bg-white text-blue-700 border border-blue-200 font-bold py-2 px-6 rounded-lg hover:bg-blue-50 transition shadow-sm text-sm">
-                Extend / Subscribe to Torbox
+            <div class="bg-white border border-green-200 p-3 rounded-lg inline-block w-full mb-5 shadow-sm text-center">
+                <p class="text-sm font-bold text-green-700">
+                    🎁 Win-Win Bonus!
+                </p>
+                <p class="text-xs text-green-600 mt-1">
+                    By using the link below, you get an <span class="font-bold">extra 7 days</span> for every month you subscribe, or <span class="font-bold">84 bonus days</span> for a 1-year plan!
+                </p>
+            </div>
+            <a href="https://torbox.app/subscription?referral=32564992-6e50-40ae-85b3-612e83d57bf9" target="_blank" class="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition shadow-md w-full sm:w-auto">
+                Subscribe & Claim Bonus Days
             </a>
         </div>
     </div>
