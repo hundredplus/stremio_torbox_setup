@@ -33,29 +33,8 @@ body {
   transition: 0.3s;
 }
 
-.step {
-  display: none;
-  animation: fade 0.3s ease;
-}
-
-.step.active {
-  display: block;
-}
-
-@keyframes fade {
-  from {opacity:0; transform: translateY(10px);}
-  to {opacity:1;}
-}
-
-h1 {
-  text-align: center;
-}
-
-.subtitle {
-  text-align: center;
-  opacity: 0.7;
-  margin-bottom: 30px;
-}
+.step { display: none; }
+.step.active { display: block; }
 
 .cards {
   display: grid;
@@ -69,11 +48,6 @@ h1 {
   padding: 20px;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: 0.2s;
-}
-
-.card:hover {
-  border-color: #e50914;
 }
 
 .card.active {
@@ -81,7 +55,7 @@ h1 {
 }
 
 .button {
-  margin-top: 30px;
+  margin-top: 25px;
   padding: 14px;
   background: #e50914;
   border: none;
@@ -91,18 +65,15 @@ h1 {
   width: 100%;
 }
 
-.button.secondary {
-  background: #333;
-}
-
-.guide {
+.setting-box {
   background: #111;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
-.step-item {
-  margin-bottom: 10px;
+.setting-box b {
+  color: #22c55e;
 }
 
 .install-btn {
@@ -127,30 +98,24 @@ h1 {
 
   <!-- STEP 1 -->
   <div class="step active" id="step1">
-    <h1>Welcome to Noontech</h1>
-    <div class="subtitle">We’ll set everything up in under 1 minute</div>
-    <button class="button" onclick="next()">Get Started</button>
+    <h1>Welcome</h1>
+    <p>We’ll set up your streaming in under 1 minute</p>
+    <button class="button" onclick="next()">Start</button>
   </div>
 
   <!-- STEP 2 -->
   <div class="step" id="step2">
-    <h1>Choose Your Experience</h1>
-    <div class="subtitle">We’ll optimize streaming for you</div>
+    <h1>Choose Experience</h1>
 
     <div class="cards">
       <div class="card" onclick="selectProfile('fast', this)">
-        <h2>⚡ Ultra Fast</h2>
-        <p>No buffering</p>
+        ⚡ Ultra Fast
       </div>
-
       <div class="card" onclick="selectProfile('balanced', this)">
-        <h2>🎬 Balanced</h2>
-        <p>Best overall</p>
+        🎬 Balanced
       </div>
-
       <div class="card" onclick="selectProfile('quality', this)">
-        <h2>💎 Best Quality</h2>
-        <p>Maximum quality</p>
+        💎 Best Quality
       </div>
     </div>
 
@@ -159,13 +124,14 @@ h1 {
 
   <!-- STEP 3 -->
   <div class="step" id="step3">
-    <h1>Apply Settings</h1>
-    <div class="subtitle">We’ll guide you exactly what to click</div>
+    <h1>Apply These Settings</h1>
 
-    <div class="guide" id="guide"></div>
+    <div id="settings"></div>
 
-    <a href="https://torbox.app/settings" target="_blank" class="install-btn">
-      Open Torbox Settings
+    <a href="https://torbox.app/settings?section=integration-settings"
+       target="_blank"
+       class="install-btn">
+       Open Torbox Settings
     </a>
 
     <button class="button" onclick="next()">Done</button>
@@ -174,35 +140,35 @@ h1 {
   <!-- STEP 4 -->
   <div class="step" id="step4">
     <h1>Install Addon</h1>
-    <div class="subtitle">Paste your addon link below</div>
 
-    <input id="addonUrl" placeholder="Paste Torbox addon URL here"
+    <input id="addonUrl"
+      placeholder="Paste Torbox addon URL"
       style="width:100%;padding:12px;border-radius:8px;border:none;background:#111;color:white">
 
-    <button class="button" onclick="install()">Install in Stremio</button>
+    <button class="button" onclick="install()">Install</button>
 
     <a id="installLink" class="install-btn" style="display:none;">Open in Stremio</a>
   </div>
 
   <!-- STEP 5 -->
   <div class="step" id="step5">
-    <h1>🎉 You're Ready</h1>
-    <div class="subtitle">Enjoy buffer-free streaming</div>
+    <h1>🎉 Done</h1>
+    <p>Enjoy smooth streaming</p>
   </div>
 
 </div>
 
 <script>
 let step = 1;
-let selected = null;
+let profile = null;
 
 function updateProgress() {
   document.getElementById("progress").style.width = (step - 1) * 25 + "%";
 }
 
 function next() {
-  if (step === 2 && !selected) {
-    alert("Select a profile first");
+  if (step === 2 && !profile) {
+    alert("Select a profile");
     return;
   }
 
@@ -210,49 +176,53 @@ function next() {
   step++;
   document.getElementById("step" + step).classList.add("active");
 
-  if (step === 3) renderGuide();
+  if (step === 3) renderSettings();
 
   updateProgress();
 }
 
 function selectProfile(p, el) {
-  selected = p;
+  profile = p;
   document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
   el.classList.add("active");
 }
 
-function renderGuide() {
-  let g = "";
+function renderSettings() {
+  let html = "";
 
-  if (selected === "fast") {
-    g = `
-      <div class="step-item">✔ Choose files under 10GB</div>
-      <div class="step-item">✔ High seeders (10+)</div>
-      <div class="step-item">✔ Avoid REMUX</div>
+  if (profile === "fast") {
+    html = `
+      <div class="setting-box"><b>Cache Settings:</b> Cached Only</div>
+      <div class="setting-box"><b>Minimum Seeders:</b> 10</div>
+      <div class="setting-box"><b>Max File Size:</b> 10 GB</div>
+      <div class="setting-box"><b>Resolution:</b> 1080p max</div>
     `;
   }
 
-  if (selected === "balanced") {
-    g = `
-      <div class="step-item">✔ 5–20GB files</div>
-      <div class="step-item">✔ 1080p–4K</div>
-      <div class="step-item">✔ Cached preferred</div>
+  if (profile === "balanced") {
+    html = `
+      <div class="setting-box"><b>Cache Settings:</b> Cached Preferred</div>
+      <div class="setting-box"><b>Minimum Seeders:</b> 5</div>
+      <div class="setting-box"><b>File Size:</b> 5–20 GB</div>
+      <div class="setting-box"><b>Resolution:</b> 1080p–4K</div>
     `;
   }
 
-  if (selected === "quality") {
-    g = `
-      <div class="step-item">✔ 20GB+ BluRay / REMUX</div>
-      <div class="step-item">✔ 4K</div>
-      <div class="step-item">✔ Fast internet required</div>
+  if (profile === "quality") {
+    html = `
+      <div class="setting-box"><b>Cache Settings:</b> Allow Uncached</div>
+      <div class="setting-box"><b>Minimum Seeders:</b> 1</div>
+      <div class="setting-box"><b>File Size:</b> 20–100 GB</div>
+      <div class="setting-box"><b>Resolution:</b> 4K only</div>
     `;
   }
 
-  document.getElementById("guide").innerHTML = g;
+  document.getElementById("settings").innerHTML = html;
 }
 
 function install() {
   const url = document.getElementById("addonUrl").value.trim();
+
   if (!url.startsWith("http")) {
     alert("Invalid URL");
     return;
