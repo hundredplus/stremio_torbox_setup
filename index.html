@@ -1,240 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Noontech Setup</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #000;
-  color: #fff;
-}
-
-.container {
-  max-width: 800px;
-  margin: auto;
-  padding: 30px 20px;
-}
-
-.progress {
-  height: 4px;
-  background: #222;
-  border-radius: 2px;
-  margin-bottom: 30px;
-}
-
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: #e50914;
-  transition: 0.3s;
-}
-
-.step { display: none; }
-.step.active { display: block; }
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: #111;
-  border-radius: 16px;
-  padding: 20px;
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-
-.card.active {
-  border-color: #e50914;
-}
-
-.button {
-  margin-top: 25px;
-  padding: 14px;
-  background: #e50914;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
-}
-
-.setting-box {
-  background: #111;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.setting-box b {
-  color: #22c55e;
-}
-
-.install-btn {
-  display: block;
-  margin-top: 20px;
-  padding: 14px;
-  background: #22c55e;
-  text-align: center;
-  border-radius: 8px;
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stremio + Torbox Easy Setup</title>
+    <!-- Pulling in Tailwind CSS for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100 text-gray-800 font-sans p-6 md:p-12">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+        <h1 class="text-2xl font-bold text-center mb-6">Connect Torbox to Stremio</h1>
+        
+        <!-- Step 1: API Key Input with Direct Link -->
+        <div class="mb-6">
+            <label class="block text-sm font-semibold mb-2" for="apiKey">1. Enter Your Torbox API Key</label>
+            
+            <div class="flex flex-col sm:flex-row gap-2 mb-2">
+                <!-- Direct link to Torbox Settings -->
+                <a href="https://torbox.app/settings" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold py-3 px-4 sm:py-2 rounded-lg transition flex items-center justify-center whitespace-nowrap">
+                    Get My Key ↗
+                </a>
+                <input type="text" id="apiKey" class="w-full p-3 sm:p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Paste key here...">
+            </div>
+            
+            <p class="text-xs text-gray-500 mt-1">Click "Get My Key", copy the long string under the API section, and paste it here.</p>
+        </div>
 
-<body>
+        <!-- Step 2: Profile Selection -->
+        <div class="mb-6">
+            <label class="block text-sm font-semibold mb-2">2. Choose Your Experience</label>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <button onclick="setProfile('fast', this)" class="profile-btn p-3 border rounded-lg hover:bg-blue-50 focus:bg-blue-100 focus:border-blue-500 transition text-left outline-none">
+                    <div class="font-bold text-blue-600">Fast</div>
+                    <div class="text-xs text-gray-600 mt-1">1080p max. Best for slower internet connections.</div>
+                </button>
+                <button onclick="setProfile('balanced', this)" class="profile-btn p-3 border rounded-lg hover:bg-green-50 focus:bg-green-100 focus:border-green-500 transition text-left outline-none">
+                    <div class="font-bold text-green-600">Balanced</div>
+                    <div class="text-xs text-gray-600 mt-1">4K supported. Prioritizes reliable links over raw size.</div>
+                </button>
+                <button onclick="setProfile('quality', this)" class="profile-btn p-3 border rounded-lg hover:bg-purple-50 focus:bg-purple-100 focus:border-purple-500 transition text-left outline-none">
+                    <div class="font-bold text-purple-600">Best Quality</div>
+                    <div class="text-xs text-gray-600 mt-1">No limits. Pulls the heaviest 4K+ files available.</div>
+                </button>
+            </div>
+        </div>
 
-<div class="container">
-
-  <div class="progress"><div class="progress-bar" id="progress"></div></div>
-
-  <!-- STEP 1 -->
-  <div class="step active" id="step1">
-    <h1>Welcome</h1>
-    <p>We’ll set up your streaming in under 1 minute</p>
-    <button class="button" onclick="next()">Start</button>
-  </div>
-
-  <!-- STEP 2 -->
-  <div class="step" id="step2">
-    <h1>Choose Experience</h1>
-
-    <div class="cards">
-      <div class="card" onclick="selectProfile('fast', this)">
-        ⚡ Ultra Fast
-      </div>
-      <div class="card" onclick="selectProfile('balanced', this)">
-        🎬 Balanced
-      </div>
-      <div class="card" onclick="selectProfile('quality', this)">
-        💎 Best Quality
-      </div>
+        <!-- Step 3: Action Area (Hidden until profile is clicked) -->
+        <div id="resultArea" class="hidden mt-8 p-6 bg-gray-50 rounded-lg border text-center">
+            <h3 class="text-lg font-bold mb-4">You're All Set!</h3>
+            <a id="installBtn" href="#" class="block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition shadow-md">
+                Install to Stremio
+            </a>
+            <p class="text-xs text-gray-500 mt-4">Make sure the Stremio app is installed on this device before clicking.</p>
+        </div>
     </div>
 
-    <button class="button" onclick="next()">Continue</button>
-  </div>
+    <!-- The Logic -->
+    <script>
+        function setProfile(profile, btnElement) {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) {
+                alert('Please enter your Torbox API key first.');
+                return;
+            }
 
-  <!-- STEP 3 -->
-  <div class="step" id="step3">
-    <h1>Apply These Settings</h1>
+            // Optional: Visually highlight the selected button
+            document.querySelectorAll('.profile-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
+            });
+            btnElement.classList.add('ring-2', 'ring-offset-2', 'ring-blue-500');
 
-    <div id="settings"></div>
+            let config = '';
+            
+            // Torrentio configuration mapping
+            if (profile === 'fast') {
+                // Sort by size (smallest first), filter out 4K, CAMs, screeners, hide non-debrid links
+                config = 'sort=size|qualityfilter=4k,cam,screener|debridoptions=nodownloadlinks';
+            } else if (profile === 'balanced') {
+                // Sort by quality then size, filter out CAMs, screeners, hide non-debrid links
+                config = 'sort=qualitysize|qualityfilter=cam,screener|debridoptions=nodownloadlinks';
+            } else if (profile === 'quality') {
+                // Sort purely by quality, hide non-debrid links
+                config = 'sort=quality|debridoptions=nodownloadlinks';
+            }
 
-    <a href="https://torbox.app/settings?section=integration-settings"
-       target="_blank"
-       class="install-btn">
-       Open Torbox Settings
-    </a>
+            // Append Torbox API Key
+            config += `|torbox=${apiKey}`;
 
-    <button class="button" onclick="next()">Done</button>
-  </div>
-
-  <!-- STEP 4 -->
-  <div class="step" id="step4">
-    <h1>Install Addon</h1>
-
-    <input id="addonUrl"
-      placeholder="Paste Torbox addon URL"
-      style="width:100%;padding:12px;border-radius:8px;border:none;background:#111;color:white">
-
-    <button class="button" onclick="install()">Install</button>
-
-    <a id="installLink" class="install-btn" style="display:none;">Open in Stremio</a>
-  </div>
-
-  <!-- STEP 5 -->
-  <div class="step" id="step5">
-    <h1>🎉 Done</h1>
-    <p>Enjoy smooth streaming</p>
-  </div>
-
-</div>
-
-<script>
-let step = 1;
-let profile = null;
-
-function updateProgress() {
-  document.getElementById("progress").style.width = (step - 1) * 25 + "%";
-}
-
-function next() {
-  if (step === 2 && !profile) {
-    alert("Select a profile");
-    return;
-  }
-
-  document.getElementById("step" + step).classList.remove("active");
-  step++;
-  document.getElementById("step" + step).classList.add("active");
-
-  if (step === 3) renderSettings();
-
-  updateProgress();
-}
-
-function selectProfile(p, el) {
-  profile = p;
-  document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-  el.classList.add("active");
-}
-
-function renderSettings() {
-  let html = "";
-
-  if (profile === "fast") {
-    html = `
-      <div class="setting-box"><b>Cache Settings:</b> Cached Only</div>
-      <div class="setting-box"><b>Minimum Seeders:</b> 10</div>
-      <div class="setting-box"><b>Max File Size:</b> 10 GB</div>
-      <div class="setting-box"><b>Resolution:</b> 1080p max</div>
-    `;
-  }
-
-  if (profile === "balanced") {
-    html = `
-      <div class="setting-box"><b>Cache Settings:</b> Cached Preferred</div>
-      <div class="setting-box"><b>Minimum Seeders:</b> 5</div>
-      <div class="setting-box"><b>File Size:</b> 5–20 GB</div>
-      <div class="setting-box"><b>Resolution:</b> 1080p–4K</div>
-    `;
-  }
-
-  if (profile === "quality") {
-    html = `
-      <div class="setting-box"><b>Cache Settings:</b> Allow Uncached</div>
-      <div class="setting-box"><b>Minimum Seeders:</b> 1</div>
-      <div class="setting-box"><b>File Size:</b> 20–100 GB</div>
-      <div class="setting-box"><b>Resolution:</b> 4K only</div>
-    `;
-  }
-
-  document.getElementById("settings").innerHTML = html;
-}
-
-function install() {
-  const url = document.getElementById("addonUrl").value.trim();
-
-  if (!url.startsWith("http")) {
-    alert("Invalid URL");
-    return;
-  }
-
-  const link = "stremio://addon-install?url=" + encodeURIComponent(url);
-
-  const btn = document.getElementById("installLink");
-  btn.href = link;
-  btn.style.display = "block";
-}
-</script>
-
+            // Generate URLs
+            const manifestUrl = `${config}/manifest.json`;
+            // Using stremio:// automatically triggers the app to open
+            const stremioUrl = `stremio://torrentio.strem.fun/${manifestUrl}`;
+            
+            // Update UI
+            document.getElementById('installBtn').href = stremioUrl;
+            document.getElementById('resultArea').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
