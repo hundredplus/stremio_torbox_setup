@@ -86,9 +86,7 @@
                         <label class="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider text-blue-600">Target Add-on</label>
                         <select id="addonChoice" onchange="updateLink()" class="w-full p-2.5 border border-blue-300 rounded-lg text-sm bg-blue-50 outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
                             <option value="torrentio">Torrentio (Recommended)</option>
-                            <option value="knightcrawler">KnightCrawler</option>
                             <option value="comet">Comet</option>
-                            <option value="annatar">Annatar</option>
                             <option value="sootio">Sootio</option>
                             <option value="torz">StremThru Torz</option>
                             <option value="meteor">Meteor</option>
@@ -207,8 +205,10 @@
 
         let currentManifestUrl = "";
 
+        // Safe Base64 for the addons that still require it
         function generateBase64(jsonObj) {
-            return btoa(JSON.stringify(jsonObj));
+            let base64 = btoa(JSON.stringify(jsonObj));
+            return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
         }
 
         function toggleSettings() {
@@ -274,22 +274,6 @@
                 if (apiKey) configParts.push(`torbox=${apiKey}`);
                 manifestUrl = `https://torrentio.strem.fun/${configParts.join('|')}/manifest.json`;
 
-            } else if (addonChoice === 'knightcrawler') {
-                let configParts = [`sort=${sort}`];
-                if (limit !== 'all') configParts.push(`limit=${limit}`);
-                if (language !== 'none') configParts.push(`language=${language}`);
-                let excludedQualities = [];
-                if (hideCams) excludedQualities.push('cam', 'screener');
-                if (hide3D) excludedQualities.push('3d');
-                if (maxRes === '1080p') excludedQualities.push('4k');
-                if (maxRes === '720p') excludedQualities.push('4k', '1080p');
-                if (excludedQualities.length > 0) configParts.push(`qualityfilter=${excludedQualities.join(',')}`);
-                let debridOpts = ['nocatalog']; 
-                if (cachedOnly) debridOpts.push('nodownloadlinks'); 
-                configParts.push(`debridoptions=${debridOpts.join(',')}`);
-                if (apiKey) configParts.push(`torbox=${apiKey}`);
-                manifestUrl = `https://knightcrawler.elfhosted.com/${configParts.join('|')}/manifest.json`;
-
             } else if (addonChoice === 'comet') {
                 const cometConfig = {
                     "maxResultsPerResolution": 0,
@@ -309,30 +293,32 @@
                 };
                 manifestUrl = `https://comet.elfhosted.com/${generateBase64(cometConfig)}/manifest.json`;
 
-            } else if (addonChoice === 'annatar') {
-                const annatarConfig = {
-                    "debrid_providers": {},
-                    "indexers": ["yts", "eztv", "rarbg", "1337x", "kickasstorrents", "torrentgalaxy", "magnetdl"],
-                    "max_results": limit === 'all' ? 50 : parseInt(limit),
-                    "search_timeout": 5,
-                    "exclude_p2p": true
-                };
-                if (apiKey) {
-                    annatarConfig.debrid_providers["torbox"] = apiKey;
-                }
-                manifestUrl = `https://annatar.elfhosted.com/${generateBase64(annatarConfig)}/manifest.json`;
-
             } else if (addonChoice === 'sootio') {
+                // Sootio now uses URL Encoded JSON instead of Base64
                 const sootioConfig = {
-                    "providers": { "torbox": apiKey || "" },
-                    "prioritize_cached": true,
-                    "quality_tiers": ["remux", "bluray", "webdl", "webrip"],
-                    "filters": {
-                        "hide_cams": hideCams,
-                        "hide_3d": hide3D
-                    }
+                    "DebridServices": [{
+                        "provider": "TorBox",
+                        "apiKey": apiKey || "",
+                        "enablePersonalCloud": true,
+                        "enableProxy": false,
+                        "proxyUrl": "",
+                        "proxyPassword": ""
+                    }],
+                    "Languages": [],
+                    "Resolutions": [],
+                    "Scrapers": ["jackett", "1337x", "snowfl", "magnetdl", "ilcorsaronero", "knaben", "torrentgalaxy", "torrentdownload", "limetorrents"],
+                    "IndexerScrapers": ["stremthru"],
+                    "ScrapersConfigured": true,
+                    "minSize": 0,
+                    "maxSize": 200,
+                    "ShowCatalog": true,
+                    "ProxyApplyAll": false,
+                    "DebridProvider": "TorBox",
+                    "DebridApiKey": apiKey || ""
                 };
-                manifestUrl = `https://sootio.elfhosted.com/${generateBase64(sootioConfig)}/manifest.json`;
+                
+                const encodedConfig = encodeURIComponent(JSON.stringify(sootioConfig));
+                manifestUrl = `https://sooti.info/${encodedConfig}/manifest.json`;
 
             } else if (addonChoice === 'torz') {
                 const torzConfig = {
