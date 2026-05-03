@@ -86,7 +86,10 @@
                         <label class="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wider text-blue-600">Target Add-on</label>
                         <select id="addonChoice" onchange="updateLink()" class="w-full p-2.5 border border-blue-300 rounded-lg text-sm bg-blue-50 outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
                             <option value="torrentio">Torrentio (Recommended)</option>
+                            <option value="knightcrawler">KnightCrawler</option>
                             <option value="comet">Comet</option>
+                            <option value="annatar">Annatar</option>
+                            <option value="sootio">Sootio</option>
                             <option value="torz">StremThru Torz</option>
                             <option value="meteor">Meteor</option>
                             <option value="hdhub">HdHub</option>
@@ -157,72 +160,18 @@
             </div>
         </div>
 
-        <!-- Step 4: Extra Add-ons -->
-        <div class="mb-10 p-5 border border-blue-100 rounded-xl bg-white shadow-sm">
-            <h2 class="flex items-center text-lg font-bold mb-4 text-gray-800">
-                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Step 4: Extra Add-ons <span class="text-xs font-normal text-gray-500 ml-2">(Optional)</span>
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- UI Catalogs -->
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-gray-700 border-b border-gray-100 pb-2">Catalogs (Better Home Screen)</h3>
-                    <label class="flex items-start text-sm cursor-pointer group">
-                        <input type="checkbox" id="addon-cyberflix" onchange="updateLink()" class="mt-1 mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" checked>
-                        <div>
-                            <span class="font-semibold text-gray-800 block">CyberFlix Catalog</span>
-                            <span class="text-xs text-gray-500">Adds Netflix, Max, and Disney+ rows.</span>
-                        </div>
-                    </label>
-                    <label class="flex items-start text-sm cursor-pointer group">
-                        <input type="checkbox" id="addon-kitsu" onchange="updateLink()" class="mt-1 mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                        <div>
-                            <span class="font-semibold text-gray-800 block">Kitsu Anime</span>
-                            <span class="text-xs text-gray-500">Dedicated Anime catalogs and tracking.</span>
-                        </div>
-                    </label>
-                </div>
-
-                <!-- Fallback Scrapers -->
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-gray-700 border-b border-gray-100 pb-2">Backup Scrapers</h3>
-                    <label class="flex items-start text-sm cursor-pointer group">
-                        <input type="checkbox" id="addon-knightcrawler" onchange="updateLink()" class="mt-1 mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                        <div>
-                            <span class="font-semibold text-gray-800 block">KnightCrawler</span>
-                            <span class="text-xs text-gray-500">Direct Torrentio fork. Great fallback.</span>
-                        </div>
-                    </label>
-                    <label class="flex items-start text-sm cursor-pointer group">
-                        <input type="checkbox" id="addon-annatar" onchange="updateLink()" class="mt-1 mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                        <div>
-                            <span class="font-semibold text-gray-800 block">Annatar</span>
-                            <span class="text-xs text-gray-500">Fast Debrid-focused scraper.</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Step 5: Finish -->
+        <!-- Step 4: Finish -->
         <div id="resultArea" class="mt-8 pt-8 border-t border-gray-200 text-center text-gray-800">
-            <h2 class="block text-lg font-bold mb-4">Step 5: Finish</h2>
-            
-            <div class="space-y-3">
-                <a id="installBtn" href="#" class="block w-full bg-gray-300 text-gray-500 font-bold py-4 px-4 rounded-xl cursor-not-allowed transition-all duration-300 text-lg flex justify-center items-center">
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Install Main Scraper
-                </a>
-                
-                <!-- Extra install buttons will be injected here -->
-                <div id="extraInstallButtons" class="space-y-3"></div>
-            </div>
+            <h2 class="block text-lg font-bold mb-4">Step 4: Finish</h2>
+            <a id="installBtn" href="#" class="block w-full bg-gray-300 text-gray-500 font-bold py-4 px-4 rounded-xl cursor-not-allowed transition-all duration-300 text-lg flex justify-center items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Install to Stremio
+            </a>
             
             <div class="mt-4 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-2">
                 <p>Make sure Stremio is installed before clicking.</p>
                 <button id="copyBtn" onclick="copyRawLink()" class="hidden text-blue-600 hover:text-blue-800 font-semibold transition">
-                    Main button not working? Copy raw link.
+                    Button not working? Copy raw link.
                 </button>
             </div>
         </div>
@@ -297,7 +246,6 @@
             const apiKey = document.getElementById('apiKey').value.trim();
             const addonChoice = document.getElementById('addonChoice').value;
             const installBtn = document.getElementById('installBtn');
-            const extraContainer = document.getElementById('extraInstallButtons');
             const copyBtn = document.getElementById('copyBtn');
             
             const maxRes = document.getElementById('maxRes').value;
@@ -326,6 +274,22 @@
                 if (apiKey) configParts.push(`torbox=${apiKey}`);
                 manifestUrl = `https://torrentio.strem.fun/${configParts.join('|')}/manifest.json`;
 
+            } else if (addonChoice === 'knightcrawler') {
+                let configParts = [`sort=${sort}`];
+                if (limit !== 'all') configParts.push(`limit=${limit}`);
+                if (language !== 'none') configParts.push(`language=${language}`);
+                let excludedQualities = [];
+                if (hideCams) excludedQualities.push('cam', 'screener');
+                if (hide3D) excludedQualities.push('3d');
+                if (maxRes === '1080p') excludedQualities.push('4k');
+                if (maxRes === '720p') excludedQualities.push('4k', '1080p');
+                if (excludedQualities.length > 0) configParts.push(`qualityfilter=${excludedQualities.join(',')}`);
+                let debridOpts = ['nocatalog']; 
+                if (cachedOnly) debridOpts.push('nodownloadlinks'); 
+                configParts.push(`debridoptions=${debridOpts.join(',')}`);
+                if (apiKey) configParts.push(`torbox=${apiKey}`);
+                manifestUrl = `https://knightcrawler.elfhosted.com/${configParts.join('|')}/manifest.json`;
+
             } else if (addonChoice === 'comet') {
                 const cometConfig = {
                     "maxResultsPerResolution": 0,
@@ -344,6 +308,31 @@
                     "options": { "remove_ranks_under": -10000000000, "allow_english_in_languages": false, "remove_unknown_languages": false }
                 };
                 manifestUrl = `https://comet.elfhosted.com/${generateBase64(cometConfig)}/manifest.json`;
+
+            } else if (addonChoice === 'annatar') {
+                const annatarConfig = {
+                    "debrid_providers": {},
+                    "indexers": ["yts", "eztv", "rarbg", "1337x", "kickasstorrents", "torrentgalaxy", "magnetdl"],
+                    "max_results": limit === 'all' ? 50 : parseInt(limit),
+                    "search_timeout": 5,
+                    "exclude_p2p": true
+                };
+                if (apiKey) {
+                    annatarConfig.debrid_providers["torbox"] = apiKey;
+                }
+                manifestUrl = `https://annatar.elfhosted.com/${generateBase64(annatarConfig)}/manifest.json`;
+
+            } else if (addonChoice === 'sootio') {
+                const sootioConfig = {
+                    "providers": { "torbox": apiKey || "" },
+                    "prioritize_cached": true,
+                    "quality_tiers": ["remux", "bluray", "webdl", "webrip"],
+                    "filters": {
+                        "hide_cams": hideCams,
+                        "hide_3d": hide3D
+                    }
+                };
+                manifestUrl = `https://sootio.elfhosted.com/${generateBase64(sootioConfig)}/manifest.json`;
 
             } else if (addonChoice === 'torz') {
                 const torzConfig = {
@@ -369,40 +358,11 @@
             currentManifestUrl = manifestUrl;
             const stremioUrl = manifestUrl.replace(/^https?:\/\//i, 'stremio://');
             
-            // Clear extra buttons first
-            extraContainer.innerHTML = '';
-
             if (apiKey.length > 10) { 
                 installBtn.href = stremioUrl;
                 installBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
                 installBtn.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700', 'shadow-lg', 'transform', 'hover:-translate-y-0.5');
                 copyBtn.classList.remove('hidden'); 
-
-                // Generate Extra Add-on Buttons
-                if (document.getElementById('addon-cyberflix').checked) {
-                    const cyberUrl = `stremio://cyberflix.elfhosted.com/manifest.json`;
-                    extraContainer.innerHTML += `<a href="${cyberUrl}" class="block w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-purple-700 transition-all duration-300 text-center shadow-md transform hover:-translate-y-0.5">🎬 Install CyberFlix Catalog</a>`;
-                }
-                
-                if (document.getElementById('addon-kitsu').checked) {
-                    const kitsuUrl = `stremio://anime-kitsu.strem.fun/manifest.json`;
-                    extraContainer.innerHTML += `<a href="${kitsuUrl}" class="block w-full bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl hover:bg-indigo-600 transition-all duration-300 text-center shadow-md transform hover:-translate-y-0.5">👺 Install Kitsu Anime</a>`;
-                }
-
-                if (document.getElementById('addon-knightcrawler').checked) {
-                    // Try to copy Torrentio's config if selected, otherwise fallback to simple torbox config
-                    let kUrl = `stremio://knightcrawler.elfhosted.com/torbox=${apiKey}/manifest.json`;
-                    if (addonChoice === 'torrentio') {
-                        kUrl = manifestUrl.replace('torrentio.strem.fun', 'knightcrawler.elfhosted.com').replace(/^https?:\/\//i, 'stremio://');
-                    }
-                    extraContainer.innerHTML += `<a href="${kUrl}" class="block w-full bg-gray-700 text-white font-bold py-3 px-4 rounded-xl hover:bg-gray-800 transition-all duration-300 text-center shadow-md transform hover:-translate-y-0.5">🛡️ Install KnightCrawler Scraper</a>`;
-                }
-
-                if (document.getElementById('addon-annatar').checked) {
-                    const annatarUrl = `stremio://annatar.elfhosted.com/${apiKey}/manifest.json`;
-                    extraContainer.innerHTML += `<a href="${annatarUrl}" class="block w-full bg-gray-700 text-white font-bold py-3 px-4 rounded-xl hover:bg-gray-800 transition-all duration-300 text-center shadow-md transform hover:-translate-y-0.5">💍 Install Annatar Scraper</a>`;
-                }
-
             } else {
                 installBtn.href = "#";
                 installBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
