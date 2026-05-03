@@ -319,7 +319,8 @@
                         "remove_unknown_languages": false 
                     }
                 };
-                manifestUrl = `https://comet.elfhosted.com/${generateBase64(cometConfig)}/manifest.json`;
+                // Comet requires strict standard Base64 with padding intact
+                manifestUrl = `https://comet.elfhosted.com/${btoa(JSON.stringify(cometConfig))}/manifest.json`;
 
             } else if (addonChoice === 'sootio') {
                 const sootioConfig = {
