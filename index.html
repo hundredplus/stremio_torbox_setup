@@ -205,7 +205,7 @@
 
         let currentManifestUrl = "";
 
-        // Safe Base64 for the addons that still require it
+        // Safe Base64 encoding for addons that require it (Stremio URL-safe format)
         function generateBase64(jsonObj) {
             let base64 = btoa(JSON.stringify(jsonObj));
             return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -256,6 +256,16 @@
             const hideCams = document.getElementById('hideCams').checked;
             const hide3D = document.getElementById('hide3D').checked;
 
+            // Handle UI edge case: Sootio does not support limiting results via client URL
+            const limitContainer = document.getElementById('limit').parentElement;
+            if (addonChoice === 'sootio') {
+                document.getElementById('limit').disabled = true;
+                limitContainer.classList.add('opacity-50', 'pointer-events-none');
+            } else {
+                document.getElementById('limit').disabled = false;
+                limitContainer.classList.remove('opacity-50', 'pointer-events-none');
+            }
+
             let manifestUrl = "";
 
             if (addonChoice === 'torrentio') {
@@ -275,26 +285,43 @@
                 manifestUrl = `https://torrentio.strem.fun/${configParts.join('|')}/manifest.json`;
 
             } else if (addonChoice === 'comet') {
+                const cometLimit = limit === 'all' ? 0 : parseInt(limit);
+                let cometLang = [];
+                if (language === 'spanish') cometLang = ['es'];
+                if (language === 'french') cometLang = ['fr'];
+                if (language === 'italian') cometLang = ['it'];
+                if (language === 'german') cometLang = ['de'];
+                if (language === 'portuguese') cometLang = ['pt'];
+                if (language === 'hindi') cometLang = ['hi'];
+                
                 const cometConfig = {
-                    "maxResultsPerResolution": 0,
-                    "maxSize": 0,
-                    "cachedOnly": false,
+                    "maxResultsPerResolution": cometLimit,
+                    "maxSize": 536870912000, 
+                    "cachedOnly": cachedOnly, 
                     "sortCachedUncachedTogether": false,
-                    "removeTrash": true,
+                    "removeTrash": hideCams, 
                     "resultFormat": ["all"],
                     "debridServices": [{ "service": "torbox", "apiKey": apiKey || "" }],
                     "enableTorrent": false,
-                    "deduplicateStreams": false,
-                    "scrapeDebridAccountTorrents": false,
+                    "deduplicateStreams": true, 
+                    "scrapeDebridAccountTorrents": true, 
                     "debridStreamProxyPassword": "",
-                    "languages": { "required": [], "allowed": [], "exclude": [], "preferred": [] },
+                    "languages": { 
+                        "required": [], 
+                        "allowed": ["multi", "en", ...cometLang], 
+                        "exclude": [], 
+                        "preferred": cometLang
+                    },
                     "resolutions": {}, 
-                    "options": { "remove_ranks_under": -10000000000, "allow_english_in_languages": false, "remove_unknown_languages": false }
+                    "options": { 
+                        "remove_ranks_under": -10000000000, 
+                        "allow_english_in_languages": true, 
+                        "remove_unknown_languages": false 
+                    }
                 };
                 manifestUrl = `https://comet.elfhosted.com/${generateBase64(cometConfig)}/manifest.json`;
 
             } else if (addonChoice === 'sootio') {
-                // Sootio now uses URL Encoded JSON instead of Base64
                 const sootioConfig = {
                     "DebridServices": [{
                         "provider": "TorBox",
